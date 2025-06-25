@@ -40,14 +40,15 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run build",
-    "build": "npm run esbuild -- --minify && npm run copy",
+    "build": "npm run copy:webview && npm run esbuild -- --minify && npm run copy",
     "copy": "shx cp ../../node_modules/@prisma/prisma-schema-wasm/src/prisma_schema_build_bg.wasm dist/",
+    "copy:webview": "shx mkdir -p webview-ui/build && shx cp -r ../webview-ui/build/* webview-ui/build/",
     "esbuild": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
     "test": "vscode-test",
-    "clean": "rm -rf dist node_modules/.cache",
+    "clean": "rm -rf dist webview-ui node_modules/.cache",
     "package": "vsce package"
   },
   "devDependencies": {
