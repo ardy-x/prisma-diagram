@@ -53,16 +53,16 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "22.x",
+    "@types/node": "24.x",
     "@types/vscode": "^1.83.0",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1",
-    "esbuild": "^0.24.2",
-    "shx": "^0.3.4",
-    "typescript": "^5.7.2"
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.25.5",
+    "shx": "^0.4.0",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@microsoft/vscode-file-downloader-api": "^1.0.1",
-    "@prisma/internals": "^6.1.0"
+    "@prisma/internals": "^6.10.1"
   }
 }
