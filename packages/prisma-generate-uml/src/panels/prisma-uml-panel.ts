@@ -28,17 +28,20 @@ export class PrismaUMLPanel {
       'media/uml.svg',
     );
 
-    this._panel.webview.postMessage({
-      command: 'setData',
-      models,
-      connections,
-      enums,
-    });
+    // Send initial data after a short delay to ensure webview is ready
+    setTimeout(() => {
+      this._panel.webview.postMessage({
+        command: 'setData',
+        models,
+        connections,
+        enums,
+      });
 
-    this._panel.webview.postMessage({
-      command: 'setTheme',
-      theme: vscode.window.activeColorTheme.kind,
-    });
+      this._panel.webview.postMessage({
+        command: 'setTheme',
+        theme: vscode.window.activeColorTheme.kind,
+      });
+    }, 200);
 
     this._panel.webview.onDidReceiveMessage(
       async (message) => {

@@ -16,7 +16,13 @@ export function activate(context: vscode.ExtensionContext) {
       if (editor && editor.document.languageId === 'prisma') {
         const currentFileUri = editor.document.uri;
 
-        await generateUMLForPrismaFile(context, currentFileUri);
+        try {
+          await generateUMLForPrismaFile(context, currentFileUri);
+        } catch (error) {
+          vscode.window.showErrorMessage(
+            `Failed to generate UML: ${error instanceof Error ? error.message : String(error)}`,
+          );
+        }
       } else {
         vscode.window.showInformationMessage(
           'Open a .prisma file to use this command',
@@ -28,7 +34,11 @@ export function activate(context: vscode.ExtensionContext) {
   const onDidSaveDisposable = vscode.workspace.onDidSaveTextDocument(
     async (document) => {
       if (document.languageId === 'prisma' && PrismaUMLPanel.currentPanel) {
-        await generateUMLForPrismaFile(context, document.uri);
+        try {
+          await generateUMLForPrismaFile(context, document.uri);
+        } catch (error) {
+          console.error('Failed to update UML on save:', error);
+        }
       }
     },
   );
@@ -48,8 +58,9 @@ async function generateUMLForPrismaFile(
   try {
     const schemaResultFromFile = await getSchemaWithPath(fileUri.fsPath);
     response = await getDMMF({ datamodel: schemaResultFromFile.schemas });
+    outputChannel.appendLine('Successfully parsed schema from file');
   } catch (err) {
-    console.error(
+    outputChannel.appendLine(
       `[prisma-generate-uml] Tried reading schema from file: ${err}`,
     );
   }
@@ -58,19 +69,27 @@ async function generateUMLForPrismaFile(
     try {
       const schemaResultFromDir = await getSchemaWithPath(folderUri.fsPath);
       response = await getDMMF({ datamodel: schemaResultFromDir.schemas });
+      outputChannel.appendLine('Successfully parsed schema from directory');
     } catch (err) {
-      console.error(
+      outputChannel.appendLine(
         `[prisma-generate-uml] Tried reading schema from directory: ${err}`,
       );
     }
   }
 
   if (!response) {
-    throw new Error('no schema found');
+    throw new Error(
+      'No valid Prisma schema found. Make sure your schema file is valid and contains at least one model.',
+    );
   }
 
   const { models, connections, enums } =
     transformDmmfToModelsAndConnections(response);
+
+  outputChannel.appendLine(
+    `Found ${models.length} models, ${connections.length} connections, ${enums.length} enums`,
+  );
+
   PrismaUMLPanel.render(
     context.extensionUri,
     models,
