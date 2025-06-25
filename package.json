@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@vscode/vsce": "^3.5.0",
     "turbo": "^2.5.4"
   },
   "packageManager": "npm@11.4.2"
