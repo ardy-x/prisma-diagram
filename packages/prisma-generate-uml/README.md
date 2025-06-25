@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-    <a href="#" target="_blank"><img src="./assets/banner.jpg" alt="logo"></a>
+    <a href="#" target="_blank"><img src="./media/readme/banner.jpg" alt="logo"></a>
     <br />
     <br />
     <b>Prisma Generate UML</b> is a VSCode extension that quickly creates UML diagrams from Prisma schemas with a single click, offering easy visualization.
@@ -34,7 +34,7 @@ Say goodbye to boring documentation and hello to the dazzling representation of 
 
 Transform your Prisma definitions into a stunning UML diagram with ease and dive into the excitement of data visualization! 🪄💎
 
-![Example](assets/example.gif)
+![Example](media/readme/example.gif)
 
 ## 🚀 How to Use
 
@@ -46,4 +46,4 @@ Generate UML diagrams with a single click:
 
 Simplify data architecture visualization in an exciting way! 🚀
 
-![usage](assets/usage.jpg)
+![usage](media/readme/usage.jpg)
