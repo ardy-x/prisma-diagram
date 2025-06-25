@@ -1,0 +1,67 @@
+{
+  "name": "prisma-generate-uml",
+  "displayName": "Prisma Generate UML",
+  "description": "Generate UML Diagram from prisma schema",
+  "version": "3.4.0",
+  "icon": "./media/readme/logo.png",
+  "repository": "https://github.com/AbianS/prisma-generate-uml",
+  "publisher": "AbianS",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./dist/extension.js",
+  "browser": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "prisma-generate-uml.generateUML",
+        "title": "Generate Prisma UML",
+        "icon": {
+          "light": "./media/logo_light.svg",
+          "dark": "./media/logo_dark.svg"
+        }
+      },
+      {
+        "command": "hello-world.showHelloWorld",
+        "title": "Hello World (React + Vite): Show"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "editorLangId == prisma",
+          "command": "prisma-generate-uml.generateUML",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "npm run esbuild -- --minify && npm run copy",
+    "copy": "shx cp ../../node_modules/@prisma/prisma-schema-wasm/src/prisma_schema_build_bg.wasm dist/",
+    "esbuild": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "vscode-test",
+    "clean": "rm -rf dist node_modules/.cache",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.83.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.24.2",
+    "shx": "^0.3.4",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@microsoft/vscode-file-downloader-api": "^1.0.1",
+    "@prisma/internals": "^6.1.0"
+  }
+}
