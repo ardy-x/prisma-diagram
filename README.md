@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-    <a href="#" target="_blank"><img src="./media/readme/banner.jpg" alt="logo"></a>
+    <a href="#" target="_blank"><img src="./packages/prisma-generate-uml/media/readme/banner.jpg" alt="logo"></a>
     <br />
     <br />
     <b>Prisma Generate UML</b> is a VSCode extension that quickly creates UML diagrams from Prisma schemas with a single click, offering easy visualization.
@@ -16,34 +16,153 @@
 > 🚧
 > **Prisma Generate UML** is currently under development. Stay tuned for more updates!
 
+## 🏗️ Architecture
+
+```mermaid
+graph TB
+    subgraph "Prisma Input"
+        SCHEMA["📝 schema.prisma<br/>Prisma schema file<br/>Models, Enums, Relations"]
+        FILE_WATCHER["👁️ File Watcher<br/>Detects .prisma changes"]
+    end
+    
+    subgraph "VSCode Environment"
+        EDITOR["📝 VSCode Editor<br/>Editor interface"]
+        CMD["⚡ Command Palette<br/>prisma-generate-uml.generateUML"]
+        ICON["🔗 UML Icon<br/>Toolbar button"]
+    end
+    
+    subgraph "Extension Core"
+        EXT_ENTRY["🚀 extension.ts<br/>Entry point<br/>Command registration"]
+        PARSER["⚡ DMMF Parser<br/>@prisma/internals<br/>getDMMF() + getSchemaWithPath()"]
+        RENDER["🎨 Render Engine<br/>transformDmmfToModelsAndConnections()<br/>Generates Models, Connections, Enums"]
+        PANEL_MGR["📋 PrismaUMLPanel<br/>Manages WebView lifecycle<br/>postMessage() communication"]
+    end
+    
+    subgraph "WebView Container"
+        WEBVIEW["🌐 VSCode WebView<br/>Isolated container<br/>HTML + CSS + JS"]
+        CSP["🔒 Content Security Policy<br/>WebView security"]
+    end
+    
+    subgraph "React Application"
+        APP["⚛️ App.tsx<br/>Root component<br/>Global state"]
+        THEME["🎨 Theme Provider<br/>VSCode theme handling"]
+        VISUALIZER["📊 SchemaVisualizer<br/>Main container"]
+        FLOW_PROVIDER["🔄 ReactFlowProvider<br/>@xyflow/react context"]
+    end
+    
+    subgraph "UML Components"
+        FLOW["📊 ReactFlow Canvas<br/>Rendering engine<br/>Drag & Drop, Zoom, Pan"]
+        MODEL_NODE["🏗️ ModelNode<br/>Model component<br/>Fields, Types, Relations"]
+        ENUM_NODE["📝 EnumNode<br/>Enum component<br/>Enumerated values"]
+        CONNECTIONS["🔗 Edges/Connections<br/>Model relationships"]
+    end
+    
+    subgraph "Output Actions"
+        SCREENSHOT["📸 Screenshot<br/>Export PNG/SVG"]
+        DOWNLOAD["💾 Download<br/>Save image"]
+    end
+    
+    SCHEMA --> FILE_WATCHER
+    FILE_WATCHER --> EXT_ENTRY
+    EDITOR --> CMD
+    EDITOR --> ICON
+    CMD --> EXT_ENTRY
+    ICON --> EXT_ENTRY
+    
+    EXT_ENTRY --> PARSER
+    PARSER --> RENDER
+    RENDER --> PANEL_MGR
+    
+    PANEL_MGR --> WEBVIEW
+    WEBVIEW --> CSP
+    CSP --> APP
+    
+    APP --> THEME
+    APP --> VISUALIZER
+    VISUALIZER --> FLOW_PROVIDER
+    FLOW_PROVIDER --> FLOW
+    
+    FLOW --> MODEL_NODE
+    FLOW --> ENUM_NODE
+    FLOW --> CONNECTIONS
+    
+    MODEL_NODE --> SCREENSHOT
+    ENUM_NODE --> SCREENSHOT
+    SCREENSHOT --> DOWNLOAD
+    
+    DOWNLOAD -.-> PANEL_MGR
+    PANEL_MGR -.-> EXT_ENTRY
+```
+
+## 📦 Project Structure
+
+```
+prisma-generate-uml/
+├── packages/
+│   ├── prisma-generate-uml/     # VSCode Extension
+│   │   ├── src/
+│   │   │   ├── extension.ts     # Entry point
+│   │   │   ├── panels/          # WebView management
+│   │   │   └── core/            # Rendering logic
+│   │   └── package.json
+│   │
+│   ├── webview-ui/              # React Frontend
+│   │   ├── src/
+│   │   │   ├── App.tsx          # Main component
+│   │   │   ├── components/      # UML Components
+│   │   │   └── lib/             # Utils and types
+│   │   └── package.json
+│   │
+│   └── schema.prisma            # Example schema
+│
+├── turbo.json                   # Turbo configuration
+└── package.json                 # Root workspace
+```
+
+## 🚀 Development
+
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/AbianS/prisma-generate-uml.git
+cd prisma-generate-uml
+
+# Install dependencies
+npm install
+
+# Development
+npm run dev
+```
+
 ## ✨ Features
 
-- 🔥 **Instant UML Diagrams**: Generate UML diagrams from Prisma schemas with a single click.
-- 🖼 **Easy Visualization**: Simplify data architecture visualization in an exciting way.
-- 🛠 **Seamless Integration**: Works seamlessly within VSCode, no extra configuration required.
-- 📂 **Multi-file Prisma Schema Support**: We fully support Prisma's `prismaSchemaFolder` feature, allowing you to split your schema into multiple files while still generating a complete UML diagram of your entire database.
-- 🔃 **Automatic Updates**: We'll keep your UML diagrams up-to-date with the latest changes to your Prisma schema.
+- 🔥 **Instant UML Diagrams**: Generate UML diagrams from Prisma schemas with a single click
+- 🖼 **Easy Visualization**: Simplify data architecture visualization in an exciting way
+- 🛠 **Seamless Integration**: Works seamlessly within VSCode, no extra configuration required
+- 📂 **Multi-file Prisma Schema Support**: Full support for Prisma's `prismaSchemaFolder` feature
+- 🔃 **Automatic Updates**: Keep your UML diagrams up-to-date with schema changes
 
-## 🔍 What It Does
+## 🏃‍♂️ Quick Usage
 
-Get ready to breathe life into your data models! ✨ With our extension, creating UML diagrams from your Prisma files is as easy as it gets.
+1. Open a `.prisma` file in VSCode
+2. Look for the UML icon in the editor toolbar
+3. Click it to generate the diagram instantly
 
-🚀 When you open your Prisma schema, the UML icon at the top of the editor becomes your magic wand. A simple click, and presto! Your UML model springs to life in an instant.
+## 🛠️ Technologies
 
-Say goodbye to boring documentation and hello to the dazzling representation of your database architecture.
+- **Extension**: TypeScript + VSCode Extension API
+- **WebView**: React + Vite + Tailwind CSS
+- **UML Rendering**: React Flow + Custom Components  
+- **Prisma Integration**: @prisma/internals DMMF
+- **Monorepo**: Turbo + npm workspaces
+- **Code Quality**: Biome (ESLint + Prettier alternative)
 
-Transform your Prisma definitions into a stunning UML diagram with ease and dive into the excitement of data visualization! 🪄💎
+## 📄 License
 
-![Example](media/readme/example.gif)
-
-## 🚀 How to Use
-
-Generate UML diagrams with a single click:
-
-1. Open your Prisma file.
-2. Look for the UML icon at the top of the editor.
-3. Click it, and you're done! Your UML diagram will be created instantly.
-
-Simplify data architecture visualization in an exciting way! 🚀
-
-![usage](media/readme/usage.jpg)
+MIT License - see [LICENSE](LICENSE) for more details.

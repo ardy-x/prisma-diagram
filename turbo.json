@@ -1,0 +1,32 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "build/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "//#lint": {
+      "cache": false
+    },
+    "//#lint:fix": {
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["^test", "^build"]
+    },
+    "prisma-generate-uml#build": {
+      "dependsOn": ["webview-ui#build"],
+      "cache": false
+    },
+    "prisma-generate-uml#package": {
+      "dependsOn": ["prisma-generate-uml#build"],
+      "cache": false
+    }
+  }
+}
