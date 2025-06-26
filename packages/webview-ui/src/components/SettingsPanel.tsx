@@ -90,7 +90,10 @@ export const SettingsPanel = () => {
           rootWidth: '280px',
         },
       }}
-      titleBar={false}
+      titleBar={{
+        drag: false,
+        title: 'Settings',
+      }}
       collapsed={false}
     />
   );

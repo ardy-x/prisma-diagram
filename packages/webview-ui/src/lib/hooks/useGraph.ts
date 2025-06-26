@@ -28,16 +28,29 @@ export const useGraph = (
   const [selectedLayout, setSelectedLayout] = useState<string>(DEFAULT_LAYOUT);
 
   const [shouldFitView, setShouldFitView] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   const isFirstRender = useRef(true);
 
   const applyLayout = useCallback(
-    (layoutDirection: string, fromNodes = nodes, fromEdges = edges) => {
+    (
+      layoutDirection: string,
+      fromNodes = nodes,
+      fromEdges = edges,
+      isInitial = false,
+    ) => {
       const { nodes: layoutedNodes, edges: layoutedEdges } =
         getLayoutedElements(fromNodes, fromEdges, layoutDirection);
       setNodes(layoutedNodes);
       setEdges(layoutedEdges);
-      setShouldFitView(true);
+
+      if (isInitial) {
+        // For initial render, be more direct but still use better settings
+        setIsReady(true);
+        setShouldFitView(true);
+      } else {
+        setShouldFitView(true);
+      }
     },
     [nodes, edges, setNodes, setEdges],
   );
@@ -79,7 +92,7 @@ export const useGraph = (
 
     if (isFirstRender.current) {
       isFirstRender.current = false;
-      applyLayout(DEFAULT_LAYOUT, initialNodes, initialEdges);
+      applyLayout(DEFAULT_LAYOUT, initialNodes, initialEdges, true);
       return;
     }
 
@@ -99,10 +112,19 @@ export const useGraph = (
 
   useEffect(() => {
     if (shouldFitView) {
-      fitView();
+      // Use requestAnimationFrame to ensure the nodes are rendered before fitting view
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          fitView({
+            padding: 0.2,
+            minZoom: 0.1,
+            duration: 800,
+          });
+        }, 100);
+      });
       setShouldFitView(false);
     }
-  }, [shouldFitView, fitView]);
+  }, [shouldFitView, fitView, isReady]);
 
   useEffect(() => {
     const deleteDiv = document.getElementsByClassName(

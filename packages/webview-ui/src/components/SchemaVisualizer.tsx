@@ -116,8 +116,6 @@ export const SchemaVisualizer = ({ connections, models, enums }: Props) => {
         nodeTypes={{ model: ModelNode, enum: EnumNode }}
         connectionLineType={ConnectionLineType.SmoothStep}
         minZoom={0.2}
-        fitView
-        fitViewOptions={{ padding: 0.1 }}
       >
         <Controls>
           <ControlButton
