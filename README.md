@@ -16,6 +16,8 @@
 > 🚧
 > **Prisma Generate UML** is currently under development. Stay tuned for more updates!
 
+![Example](media/readme/example.gif)
+
 ## 🏗️ Architecture
 
 ```mermaid
