@@ -1,10 +1,12 @@
 import { NodeProps } from '@xyflow/react';
 import { memo } from 'react';
 import { useTheme } from '../lib/contexts/theme';
+import { useSettings } from '../lib/contexts/settings';
 import { EnumNodeTye } from '../lib/types/schema';
 
 export const EnumNode = memo(({ data }: NodeProps<EnumNodeTye>) => {
   const { isDarkMode } = useTheme();
+  const { settings } = useSettings();
 
   return (
     <div
@@ -21,21 +23,15 @@ export const EnumNode = memo(({ data }: NodeProps<EnumNodeTye>) => {
       `}
     >
       <div
-        className={`
-          p-2 text-center 
-          ${
-            isDarkMode
-              ? 'bg-gradient-to-r from-green-600 to-teal-700'
-              : 'bg-gradient-to-r from-green-400 to-teal-500'
-          }
-        `}
+        className="p-2 text-center"
+        style={{
+          background: `linear-gradient(to right, ${settings.theme.enumColor}, ${settings.theme.enumColor}dd)`,
+          color: settings.theme.titleColor,
+        }}
       >
         <p
-          className={`
-            font-semibold 
-            tracking-wide 
-            ${isDarkMode ? 'text-white' : 'text-white'}
-          `}
+          className="font-semibold tracking-wide"
+          style={{ color: settings.theme.titleColor }}
         >
           <pre>{data.name}</pre>
         </p>

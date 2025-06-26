@@ -23,10 +23,6 @@
     "prisma-generate-uml#build": {
       "dependsOn": ["webview-ui#build"],
       "cache": false
-    },
-    "prisma-generate-uml#package": {
-      "dependsOn": ["prisma-generate-uml#build"],
-      "cache": false
     }
   }
 }
