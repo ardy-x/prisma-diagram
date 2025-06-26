@@ -1,6 +1,7 @@
 import { Handle, NodeProps, Position } from '@xyflow/react';
 import { JSX, memo } from 'react';
 import { useTheme } from '../lib/contexts/theme';
+import { useSettings } from '../lib/contexts/settings';
 import { ModelNodeTye } from '../lib/types/schema';
 
 import {
@@ -34,6 +35,7 @@ const getIconForType = (type: string) => {
 
 export const ModelNode = memo(({ data }: NodeProps<ModelNodeTye>) => {
   const { isDarkMode } = useTheme();
+  const { settings } = useSettings();
 
   return (
     <div
@@ -58,21 +60,14 @@ export const ModelNode = memo(({ data }: NodeProps<ModelNodeTye>) => {
       )}
 
       <div
-        className={`
-          p-2 text-center 
-          ${
-            isDarkMode
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-700'
-              : 'bg-gradient-to-r from-blue-400 to-indigo-500'
-          }
-        `}
+        className="p-2 text-center"
+        style={{
+          background: `linear-gradient(to right, ${settings.theme.primaryColor}, ${settings.theme.secondaryColor})`,
+        }}
       >
         <p
-          className={`
-            font-semibold 
-            tracking-wide 
-            ${isDarkMode ? 'text-white' : 'text-white'}
-          `}
+          className="font-semibold tracking-wide"
+          style={{ color: settings.theme.titleColor }}
         >
           <pre>{data.name}</pre>
         </p>
@@ -101,12 +96,14 @@ export const ModelNode = memo(({ data }: NodeProps<ModelNodeTye>) => {
             `}
           >
             <div className="flex items-center gap-2">
-              {getIconForType(type)}
+              {settings.showFieldIcons && getIconForType(type)}
               <span className="font-medium whitespace-pre-wrap">{name}</span>
             </div>
-            <div className="ml-auto text-gray-600 dark:text-gray-300">
-              <pre className="whitespace-pre-wrap">{type}</pre>
-            </div>
+            {settings.showFieldTypes && (
+              <div className="ml-auto text-gray-600 dark:text-gray-300">
+                <pre className="whitespace-pre-wrap">{type}</pre>
+              </div>
+            )}
 
             {hasConnections && (
               <Handle

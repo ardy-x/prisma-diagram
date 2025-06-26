@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SchemaVisualizer } from './components/SchemaVisualizer';
 import { ThemeProvider } from './lib/contexts/theme';
+import { SettingsProvider } from './lib/contexts/settings';
 import {
   ColorThemeKind,
   Enum,
@@ -41,13 +42,15 @@ function App() {
     models.length > 0 &&
     connections.length > 0 && (
       <ThemeProvider theme={theme}>
-        <ReactFlowProvider>
-          <SchemaVisualizer
-            models={models}
-            connections={connections}
-            enums={enums}
-          />
-        </ReactFlowProvider>
+        <SettingsProvider>
+          <ReactFlowProvider>
+            <SchemaVisualizer
+              models={models}
+              connections={connections}
+              enums={enums}
+            />
+          </ReactFlowProvider>
+        </SettingsProvider>
       </ThemeProvider>
     )
   );

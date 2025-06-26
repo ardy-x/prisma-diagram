@@ -11,10 +11,15 @@ import {
   useReactFlow,
 } from '@xyflow/react';
 import { MyNode } from '../types/schema';
+import { DiagramSettings } from '../contexts/settings';
 
 const DEFAULT_LAYOUT = 'TB';
 
-export const useGraph = (initialNodes: MyNode[], initialEdges: Edge[]) => {
+export const useGraph = (
+  initialNodes: MyNode[],
+  initialEdges: Edge[],
+  settings: DiagramSettings,
+) => {
   const { fitView } = useReactFlow();
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -44,6 +49,14 @@ export const useGraph = (initialNodes: MyNode[], initialEdges: Edge[]) => {
     },
     [applyLayout],
   );
+
+  // Apply layout from settings automatically
+  useEffect(() => {
+    if (settings?.layout && settings.layout !== selectedLayout) {
+      applyLayout(settings.layout);
+      setSelectedLayout(settings.layout);
+    }
+  }, [settings?.layout, selectedLayout, applyLayout]);
 
   const onConnect = useCallback(
     (params: Connection) => {
