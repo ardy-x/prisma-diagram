@@ -94,7 +94,7 @@ export const SettingsPanel = () => {
         drag: false,
         title: 'Settings',
       }}
-      collapsed={false}
+      collapsed={true}
     />
   );
 };
