@@ -60,7 +60,8 @@
     "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.25.5",
     "shx": "^0.4.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vsce": "2.15.0"
   },
   "dependencies": {
     "@microsoft/vscode-file-downloader-api": "^1.0.1",
