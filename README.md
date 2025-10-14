@@ -152,6 +152,9 @@ npm run dev
 
 ## 🏃‍♂️ Quick Usage
 
+You must have [the Prisma VSCode extension](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
+installed to use this extension.
+
 1. Open a `.prisma` file in VSCode
 2. Look for the UML icon in the editor toolbar
 3. Click it to generate the diagram instantly
