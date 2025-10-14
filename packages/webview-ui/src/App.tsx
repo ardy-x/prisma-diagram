@@ -9,6 +9,7 @@ import {
   ModelConnection,
 } from './lib/types/schema';
 import { ReactFlowProvider } from '@xyflow/react';
+import { getVsCodeApi } from './lib/utils/vscode-api';
 
 function App() {
   const [models, setModels] = useState<Model[]>([]);
@@ -33,26 +34,35 @@ function App() {
 
     window.addEventListener('message', handleMessage);
 
+    // Notify extension that webview is ready
+    const vscode = getVsCodeApi();
+    if (vscode) {
+      vscode.postMessage({ command: 'webviewReady' });
+    }
+
     return () => {
       window.removeEventListener('message', handleMessage);
     };
   }, []);
 
   return (
-    models.length > 0 &&
-    connections.length > 0 && (
-      <ThemeProvider theme={theme}>
-        <SettingsProvider>
-          <ReactFlowProvider>
+    <ThemeProvider theme={theme}>
+      <SettingsProvider>
+        <ReactFlowProvider>
+          {models.length > 0 && connections.length > 0 ? (
             <SchemaVisualizer
               models={models}
               connections={connections}
               enums={enums}
             />
-          </ReactFlowProvider>
-        </SettingsProvider>
-      </ThemeProvider>
-    )
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: 'var(--vscode-foreground)' }}>
+              Loading schema...
+            </div>
+          )}
+        </ReactFlowProvider>
+      </SettingsProvider>
+    </ThemeProvider>
   );
 }
 
