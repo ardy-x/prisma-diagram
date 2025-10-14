@@ -9,8 +9,8 @@
       "name": "Run Extension",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}/packages/prisma-generate-uml"],
+      "outFiles": ["${workspaceFolder}/packages/prisma-generate-uml/dist/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}"
     },
     {
@@ -18,8 +18,8 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/test/suite/index"
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/prisma-generate-uml",
+        "--extensionTestsPath=${workspaceFolder}/packages/prisma-generate-uml/test/suite/index"
       ]
     }
   ]

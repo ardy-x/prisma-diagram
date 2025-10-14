@@ -1,24 +1,7 @@
 import { getNodesBounds, getViewportForBounds } from '@xyflow/react';
 import { toPng } from 'html-to-image';
 import { MyNode } from '../types/schema';
-
-interface VSCodeAPI {
-  postMessage(message: SaveImageMessage): void;
-  getState(): unknown;
-  setState(state: unknown): void;
-}
-
-interface SaveImageMessage {
-  command: 'saveImage';
-  data: {
-    format: 'png';
-    dataUrl: string;
-  };
-}
-
-declare function acquireVsCodeApi(): VSCodeAPI;
-
-const vscode = acquireVsCodeApi();
+import { getVsCodeApi } from './vscode-api';
 
 export const screenshot = (getNodes: () => MyNode[]) => {
   const nodesBounds = getNodesBounds(getNodes());
@@ -49,10 +32,15 @@ export const screenshot = (getNodes: () => MyNode[]) => {
     },
   })
     .then((dataUrl) => {
-      vscode.postMessage({
-        command: 'saveImage',
-        data: { format: 'png', dataUrl },
-      });
+      const vscode = getVsCodeApi();
+      if (vscode) {
+        vscode.postMessage({
+          command: 'saveImage',
+          data: { format: 'png', dataUrl },
+        });
+      } else {
+        console.error('VS Code API not available for screenshot');
+      }
     })
     .catch((error) => {
       console.error('Error generating image:', error);

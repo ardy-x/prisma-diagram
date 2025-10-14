@@ -8,6 +8,9 @@ export class PrismaUMLPanel {
   public static readonly viewType = 'prismaUML';
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
+  private _models: Model[] = [];
+  private _connections: ModelConnection[] = [];
+  private _enums: Enum[] = [];
 
   private constructor(
     panel: vscode.WebviewPanel,
@@ -18,6 +21,9 @@ export class PrismaUMLPanel {
     enums: Enum[],
   ) {
     this._panel = panel;
+    this._models = models;
+    this._connections = connections;
+    this._enums = enums;
 
     this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
@@ -28,24 +34,23 @@ export class PrismaUMLPanel {
       'media/uml.svg',
     );
 
-    // Send initial data after a short delay to ensure webview is ready
-    setTimeout(() => {
-      this._panel.webview.postMessage({
-        command: 'setData',
-        models,
-        connections,
-        enums,
-      });
-
-      this._panel.webview.postMessage({
-        command: 'setTheme',
-        theme: vscode.window.activeColorTheme.kind,
-      });
-    }, 200);
-
     this._panel.webview.onDidReceiveMessage(
       async (message) => {
         switch (message.command) {
+          case 'webviewReady':
+            // Send data when webview notifies it's ready
+            this._panel.webview.postMessage({
+              command: 'setData',
+              models: this._models,
+              connections: this._connections,
+              enums: this._enums,
+            });
+
+            this._panel.webview.postMessage({
+              command: 'setTheme',
+              theme: vscode.window.activeColorTheme.kind,
+            });
+            return;
           case 'saveImage':
             await this._saveImage(message.data);
             return;
@@ -114,6 +119,10 @@ export class PrismaUMLPanel {
     connections: ModelConnection[],
     enums: Enum[],
   ) {
+    this._models = models;
+    this._connections = connections;
+    this._enums = enums;
+    
     this._panel.webview.postMessage({
       command: 'setData',
       models,
