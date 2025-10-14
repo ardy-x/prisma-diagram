@@ -27,9 +27,6 @@ jobs:
       - name: Build
         run: npm run build
       
-      - name: Package extension
-        run: npm run package:extension
-      
       - name: Get version from tag
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
