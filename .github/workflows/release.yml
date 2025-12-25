@@ -39,7 +39,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: packages/prisma-generate-uml/*.vsix
+          files: packages/prisma-diagram/*.vsix
           generate_release_notes: true
           draft: false
           prerelease: false

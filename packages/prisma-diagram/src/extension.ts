@@ -5,11 +5,11 @@ import { PrismaUMLPanel } from './panels/prisma-uml-panel';
 let outputChannel: vscode.OutputChannel;
 
 export function activate(context: vscode.ExtensionContext) {
-  outputChannel = vscode.window.createOutputChannel('Prisma Generate UML');
-  outputChannel.appendLine('Prisma Generate UML extension activated');
+  outputChannel = vscode.window.createOutputChannel('Prisma Diagram');
+  outputChannel.appendLine('Prisma Diagram extension activated');
 
   const disposable = vscode.commands.registerCommand(
-    'prisma-generate-uml.generateUML',
+    'prismaDiagram.showDiagram',
     async () => {
       const editor = vscode.window.activeTextEditor;
 
@@ -63,7 +63,7 @@ async function generateUMLForPrismaFile(
     outputChannel.appendLine('Successfully parsed schema from directory');
   } catch (err) {
     outputChannel.appendLine(
-      `[prisma-generate-uml] Failed to load schema: ${err}`,
+      `[prisma-diagram] Failed to load schema: ${err}`
     );
   }
 
