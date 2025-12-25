@@ -1,4 +1,4 @@
-import { getDMMF, getSchemaWithPath } from '@prisma/internals';
+import { getDMMF, loadSchemaContext } from '@prisma/internals';
 import * as vscode from 'vscode';
 import { transformDmmfToModelsAndConnections } from './core/render';
 import { PrismaUMLPanel } from './panels/prisma-uml-panel';
@@ -56,25 +56,15 @@ async function generateUMLForPrismaFile(
   let response: Awaited<ReturnType<typeof getDMMF>> | null = null;
 
   try {
-    const schemaResultFromFile = await getSchemaWithPath(fileUri.fsPath);
-    response = await getDMMF({ datamodel: schemaResultFromFile.schemas });
-    outputChannel.appendLine('Successfully parsed schema from file');
+    const schemaContext = await loadSchemaContext({
+      schemaPath: { baseDir: folderUri.fsPath },
+    });
+    response = await getDMMF({ datamodel: schemaContext.schemaFiles });
+    outputChannel.appendLine('Successfully parsed schema from directory');
   } catch (err) {
     outputChannel.appendLine(
-      `[prisma-generate-uml] Tried reading schema from file: ${err}`,
+      `[prisma-generate-uml] Failed to load schema: ${err}`,
     );
-  }
-
-  if (!response) {
-    try {
-      const schemaResultFromDir = await getSchemaWithPath(folderUri.fsPath);
-      response = await getDMMF({ datamodel: schemaResultFromDir.schemas });
-      outputChannel.appendLine('Successfully parsed schema from directory');
-    } catch (err) {
-      outputChannel.appendLine(
-        `[prisma-generate-uml] Tried reading schema from directory: ${err}`,
-      );
-    }
   }
 
   if (!response) {
