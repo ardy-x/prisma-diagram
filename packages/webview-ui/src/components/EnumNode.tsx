@@ -1,7 +1,7 @@
 import { NodeProps } from '@xyflow/react';
 import { memo } from 'react';
-import { useTheme } from '../lib/contexts/theme';
 import { useSettings } from '../lib/contexts/settings';
+import { useTheme } from '../lib/contexts/theme';
 import { EnumNodeTye } from '../lib/types/schema';
 
 export const EnumNode = memo(({ data }: NodeProps<EnumNodeTye>) => {

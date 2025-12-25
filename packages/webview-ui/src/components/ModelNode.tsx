@@ -1,7 +1,7 @@
 import { Handle, NodeProps, Position } from '@xyflow/react';
 import { JSX, memo } from 'react';
-import { useTheme } from '../lib/contexts/theme';
 import { useSettings } from '../lib/contexts/settings';
+import { useTheme } from '../lib/contexts/theme';
 import { ModelNodeTye } from '../lib/types/schema';
 
 import {
@@ -62,7 +62,7 @@ export const ModelNode = memo(({ data }: NodeProps<ModelNodeTye>) => {
       <div
         className="p-2 text-center"
         style={{
-          background: `linear-gradient(to right, ${settings.theme.primaryColor}, ${settings.theme.secondaryColor})`,
+          background: settings.theme.primaryColor,
         }}
       >
         <p

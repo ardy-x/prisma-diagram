@@ -1,38 +1,34 @@
 {
-  "name": "prisma-generate-uml",
-  "displayName": "Prisma Generate UML",
+  "name": "prisma-diagram",
+  "displayName": "Prisma Diagram",
   "description": "Generate UML Diagram from prisma schema",
   "version": "3.5.1",
   "icon": "media/readme/logo.png",
-  "repository": "https://github.com/AbianS/prisma-generate-uml",
-  "publisher": "AbianS",
+  "repository": "https://github.com/ardy-x/prisma-diagram",
+  "publisher": "ardy-x",
   "engines": {
     "vscode": "^1.83.0"
   },
   "categories": ["Other"],
-  "activationEvents": ["onStartupFinished"],
   "main": "./dist/extension.js",
   "browser": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "prisma-generate-uml.generateUML",
-        "title": "Generate Prisma UML",
+        "command": "prismaDiagram.showDiagram",
+        "title": "Prisma: Show Diagram",
         "icon": {
-          "light": "./media/logo_light.svg",
-          "dark": "./media/logo_dark.svg"
+          "light": "media/readme/logo-light.svg",
+          "dark": "media/readme/logo-dark.svg"
         }
-      },
-      {
-        "command": "hello-world.showHelloWorld",
-        "title": "Hello World (React + Vite): Show"
+
       }
     ],
     "menus": {
       "editor/title": [
         {
           "when": "editorLangId == prisma",
-          "command": "prisma-generate-uml.generateUML",
+          "command": "prismaDiagram.showDiagram",
           "group": "navigation"
         }
       ]
@@ -49,8 +45,8 @@
     "pretest": "npm run compile",
     "test": "vscode-test",
     "clean": "rm -rf dist webview-ui node_modules/.cache",
-    "package": "vsce package",
-    "publish": "vsce publish"
+    "package": "npx @vscode/vsce package",
+    "publish": "npx @vscode/vsce publish"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -61,10 +57,10 @@
     "esbuild": "^0.25.5",
     "shx": "^0.4.0",
     "typescript": "^5.8.3",
-    "vsce": "2.15.0"
+    "@vscode/vsce": "^2.15.0"
   },
   "dependencies": {
     "@microsoft/vscode-file-downloader-api": "^1.0.1",
-    "@prisma/internals": "^6.10.1"
+    "@prisma/internals": "^7.2.0"
   }
 }

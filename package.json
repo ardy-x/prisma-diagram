@@ -8,8 +8,8 @@
     "lint": "biome lint .",
     "lint:fix": "biome check . --write",
     "test": "turbo test",
-    "package:extension": "turbo build && npm run package -w prisma-generate-uml",
-    "publish:extension": "turbo build && npm run publish -w prisma-generate-uml"
+    "package:extension": "turbo build && npm run package -w prisma-diagram",
+    "publish:extension": "turbo build && npm run publish -w prisma-diagram"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

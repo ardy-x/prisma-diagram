@@ -20,7 +20,7 @@
     "test": {
       "dependsOn": ["^test", "^build"]
     },
-    "prisma-generate-uml#build": {
+    "prisma-diagram#build": {
       "dependsOn": ["webview-ui#build"],
       "cache": false
     }

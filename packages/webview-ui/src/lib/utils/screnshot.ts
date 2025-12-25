@@ -21,7 +21,7 @@ export const screenshot = (getNodes: () => MyNode[]) => {
 
   toPng(document.querySelector('.react-flow__viewport') as HTMLElement, {
     filter: (node) => {
-      const exclude = ['react-flow__minimap', 'react-flow__controls'];
+      const exclude = ['react-flow__controls'];
       return !exclude.some((className) => node.classList?.contains(className));
     },
     backgroundColor: 'transparent',

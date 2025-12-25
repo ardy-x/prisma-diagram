@@ -1,14 +1,14 @@
 <br />
 <p align="center">
-    <a href="#" target="_blank"><img src="./packages/prisma-generate-uml/media/readme/banner.jpg" alt="logo"></a>
+    <a href="#" target="_blank"><img src="./packages/prisma-diagram/media/readme/banner.jpg" alt="logo"></a>
     <br />
     <br />
-    <b>Prisma Generate UML</b> is a VSCode extension that quickly creates UML diagrams from Prisma schemas with a single click, offering easy visualization.
+    <b>Prisma Diagram</b> is a VSCode extension that quickly creates UML diagrams from Prisma schemas with a single click, offering easy visualization.
     <br />
     <br />
 </p>
 
-> _You can download final bundles from the [Releases](https://github.com/AbianS/prisma-generate-uml/releases) section._
+> _You can download final bundles from the [Releases](https://github.com/ardy-x/prisma-diagram/releases) section._
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Prisma ORM](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![esbuild](https://img.shields.io/badge/esbuild-FFCF00?style=for-the-badge&logo=esbuild&logoColor=white) ![Biome](https://img.shields.io/badge/Biome-009688?style=for-the-badge&logo=biome&logoColor=white)
 
@@ -29,7 +29,7 @@ graph TB
     
     subgraph "VSCode Environment"
         EDITOR["📝 VSCode Editor<br/>Editor interface"]
-        CMD["⚡ Command Palette<br/>prisma-generate-uml.generateUML"]
+        CMD["⚡ Command Palette<br/>prismaDiagram.showDiagram"]
         ICON["🔗 UML Icon<br/>Toolbar button"]
     end
     
@@ -99,9 +99,9 @@ graph TB
 ## 📦 Project Structure
 
 ```
-prisma-generate-uml/
+prisma-diagram/
 ├── packages/
-│   ├── prisma-generate-uml/     # VSCode Extension
+│   ├── prisma-diagram/     # VSCode Extension
 │   │   ├── src/
 │   │   │   ├── extension.ts     # Entry point
 │   │   │   ├── panels/          # WebView management
@@ -132,8 +132,8 @@ prisma-generate-uml/
 
 ```bash
 # Clone the repository
-git clone https://github.com/AbianS/prisma-generate-uml.git
-cd prisma-generate-uml
+git clone https://github.com/ardy-x/prisma-diagram.git
+cd prisma-diagram
 
 # Install dependencies
 npm install

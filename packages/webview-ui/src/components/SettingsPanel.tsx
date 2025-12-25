@@ -1,100 +1,145 @@
-import { Leva, folder, useControls } from 'leva';
-import { useTheme } from '../lib/contexts/theme';
 import { useSettings } from '../lib/contexts/settings';
 
-export const SettingsPanel = () => {
+export const SettingsPanel = ({
+  show,
+  onClose: _onClose,
+}: { show: boolean; onClose?: () => void }): React.ReactElement => {
   const { settings, updateSetting, updateTheme } = useSettings();
-  const { isDarkMode } = useTheme();
-
-  useControls({
-    // Display Section
-    Display: folder({
-      direction: {
-        value: settings.layout,
-        options: {
-          'Top to Bottom': 'TB',
-          'Left to Right': 'LR',
-          'Bottom to Top': 'BT',
-          'Right to Left': 'RL',
-        },
-        onChange: (value) => updateSetting('layout', value as any),
-      },
-      showMinimap: {
-        value: settings.showMinimap,
-        onChange: (value) => updateSetting('showMinimap', value),
-      },
-      showBackground: {
-        value: settings.showBackground,
-        onChange: (value) => updateSetting('showBackground', value),
-      },
-      backgroundVariant: {
-        value: settings.backgroundVariant,
-        options: {
-          Lines: 'lines',
-          Dots: 'dots',
-          Cross: 'cross',
-        },
-        onChange: (value) => updateSetting('backgroundVariant', value as any),
-      },
-      showFieldTypes: {
-        value: settings.showFieldTypes,
-        onChange: (value) => updateSetting('showFieldTypes', value),
-      },
-      showFieldIcons: {
-        value: settings.showFieldIcons,
-        onChange: (value) => updateSetting('showFieldIcons', value),
-      },
-    }),
-
-    // Theme Section
-    Theme: folder({
-      primaryColor: {
-        value: settings.theme.primaryColor,
-        onChange: (value) => updateTheme({ primaryColor: value }),
-      },
-      secondaryColor: {
-        value: settings.theme.secondaryColor,
-        onChange: (value) => updateTheme({ secondaryColor: value }),
-      },
-      enumColor: {
-        value: settings.theme.enumColor,
-        onChange: (value) => updateTheme({ enumColor: value }),
-      },
-      titleColor: {
-        value: settings.theme.titleColor,
-        onChange: (value) => updateTheme({ titleColor: value }),
-      },
-    }),
-  });
 
   return (
-    <Leva
-      theme={{
-        colors: {
-          elevation1: isDarkMode ? '#1c1c1c' : '#ffffff',
-          elevation2: isDarkMode ? '#2a2a2a' : '#f5f5f5',
-          elevation3: isDarkMode ? '#333333' : '#e5e5e5',
-          accent1: settings.theme.primaryColor,
-          accent2: settings.theme.secondaryColor,
-          accent3: isDarkMode ? '#6b7280' : '#9ca3af',
-          highlight1: settings.theme.primaryColor,
-          highlight2: settings.theme.secondaryColor,
-          highlight3: isDarkMode ? '#374151' : '#d1d5db',
-          vivid1: settings.theme.primaryColor,
-          folderWidgetColor: isDarkMode ? '#374151' : '#d1d5db',
-          folderTextColor: isDarkMode ? '#ffffff' : '#000000',
-          toolTipBackground: isDarkMode ? '#000000' : '#ffffff',
-          toolTipText: isDarkMode ? '#ffffff' : '#000000',
-        },
-        sizes: {
-          rootWidth: '280px',
-        },
+    <div
+      className="settings-panel"
+      style={{
+        opacity: show ? 1 : 0,
+        pointerEvents: show ? 'auto' : 'none',
+        animation: show
+          ? 'slideIn 0.3s ease-in-out'
+          : 'slideOut 0.3s ease-in-out',
       }}
-      titleBar={{
-        drag: false,
-        title: 'Settings',
-      }}
-      collapsed={true}
-    />
+    >
+      {/* Layout */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+        <button
+          className={`settings-layout-button ${settings.layout === 'TB' ? 'active' : ''}`}
+          onClick={() => updateSetting('layout', 'TB')}
+        >
+          Vertical
+        </button>
+        <button
+          className={`settings-layout-button ${settings.layout === 'LR' ? 'active' : ''}`}
+          onClick={() => updateSetting('layout', 'LR')}
+        >
+          Horizontal
+        </button>
+      </div>
+
+      <div className="settings-separator" />
+
+      {/* Display Options */}
+      <div
+        className="settings-row"
+        onClick={() =>
+          updateSetting('showFieldTypes', !settings.showFieldTypes)
+        }
+      >
+        <span className="settings-label">Field Types</span>
+        <div className="settings-control">
+          <div
+            className={`settings-toggle ${settings.showFieldTypes ? 'active' : ''}`}
+          >
+            <div
+              className={`settings-toggle-knob ${settings.showFieldTypes ? 'active' : ''}`}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="settings-row"
+        onClick={() =>
+          updateSetting('showFieldIcons', !settings.showFieldIcons)
+        }
+      >
+        <span className="settings-label">Field Icons</span>
+        <div className="settings-control">
+          <div
+            className={`settings-toggle ${settings.showFieldIcons ? 'active' : ''}`}
+          >
+            <div
+              className={`settings-toggle-knob ${settings.showFieldIcons ? 'active' : ''}`}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="settings-separator" />
+
+      {/* Theme Colors */}
+      <div className="settings-row" onClick={(e) => {
+          const input = e.currentTarget.querySelector('input') as HTMLInputElement;
+          input?.click();
+        }}>
+        <span className="settings-label">Primary</span>
+        <div className="settings-control">
+          <div
+            className="settings-color-button"
+            style={{
+              backgroundColor: settings.theme.primaryColor,
+            }}
+          >
+            <input
+              className="settings-color-input"
+              type="color"
+              value={settings.theme.primaryColor}
+              onChange={(e) => updateTheme({ primaryColor: e.target.value })}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="settings-row" onClick={(e) => {
+          const input = e.currentTarget.querySelector('input') as HTMLInputElement;
+          input?.click();
+        }}>
+        <span className="settings-label">Enums</span>
+        <div className="settings-control">
+          <div
+            className="settings-color-button"
+            style={{
+              backgroundColor: settings.theme.enumColor,
+            }}
+          >
+            <input
+              className="settings-color-input"
+              type="color"
+              value={settings.theme.enumColor}
+              onChange={(e) => updateTheme({ enumColor: e.target.value })}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="settings-row" onClick={(e) => {
+          const input = e.currentTarget.querySelector('input') as HTMLInputElement;
+          input?.click();
+        }}>
+        <span className="settings-label">Titles</span>
+        <div className="settings-control">
+          <div
+            className="settings-color-button"
+            style={{
+              backgroundColor: settings.theme.titleColor,
+            }}
+          >
+            <input
+              className="settings-color-input"
+              type="color"
+              value={settings.theme.titleColor}
+              onChange={(e) => updateTheme({ titleColor: e.target.value })}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

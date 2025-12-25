@@ -5,21 +5,20 @@ import {
   ControlButton,
   Controls,
   Edge,
-  MiniMap,
   ReactFlow,
   useReactFlow,
 } from '@xyflow/react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSettings } from '../lib/contexts/settings';
 import { useTheme } from '../lib/contexts/theme';
 import { useGraph } from '../lib/hooks/useGraph';
 import { Enum, Model, ModelConnection } from '../lib/types/schema';
-import { maskColor, nodeColor, nodeStrokeColor } from '../lib/utils/colots';
 import { screenshot } from '../lib/utils/screnshot';
 import { EnumNode } from './EnumNode';
 import { ModelNode } from './ModelNode';
 import { SettingsPanel } from './SettingsPanel';
 import { IDownload } from './icons/IDownload';
+import { ISettings } from './icons/ISettings';
 
 interface Props {
   models: Model[];
@@ -31,6 +30,7 @@ export const SchemaVisualizer = ({ connections, models, enums }: Props) => {
   const { isDarkMode } = useTheme();
   const { getNodes } = useReactFlow();
   const { settings } = useSettings();
+  const [showSettings, setShowSettings] = useState(false);
 
   const modelNodes = useMemo(() => {
     return models.map((model) => ({
@@ -81,14 +81,7 @@ export const SchemaVisualizer = ({ connections, models, enums }: Props) => {
   } = useGraph([...modelNodes, ...enumNodes], edges, settings);
 
   const getBackgroundVariant = () => {
-    switch (settings.backgroundVariant) {
-      case 'dots':
-        return BackgroundVariant.Dots;
-      case 'cross':
-        return BackgroundVariant.Cross;
-      default:
-        return BackgroundVariant.Lines;
-    }
+    return BackgroundVariant.Lines;
   };
 
   // Set CSS variables for dynamic theming
@@ -96,13 +89,34 @@ export const SchemaVisualizer = ({ connections, models, enums }: Props) => {
     '--background-color':
       settings.theme.backgroundColor || (isDarkMode ? '#1c1c1c' : '#e0e0e0'),
     '--primary-color': settings.theme.primaryColor,
-    '--secondary-color': settings.theme.secondaryColor,
     '--title-color': settings.theme.titleColor,
+    '--panel-bg': isDarkMode
+      ? 'rgba(0, 0, 0, 0.60)'
+      : 'rgba(255, 255, 255, 0.82)',
+    '--panel-shadow': isDarkMode
+      ? '0 8px 32px rgba(0, 0, 0, 0.4)'
+      : '0 8px 32px rgba(0, 0, 0, 0.1)',
+    '--panel-border': isDarkMode
+      ? 'rgba(255, 255, 255, 0.1)'
+      : 'rgba(0, 0, 0, 0.1)',
+    '--text-color': isDarkMode ? '#ffffff' : '#000000',
+    '--toggle-bg': isDarkMode
+      ? 'rgba(255, 255, 255, 0.2)'
+      : 'rgba(0, 0, 0, 0.1)',
+    '--button-bg': isDarkMode
+      ? 'rgba(255, 255, 255, 0.1)'
+      : 'rgba(0, 0, 0, 0.05)',
+    '--button-bg-active': isDarkMode
+      ? 'rgba(255, 255, 255, 0.2)'
+      : 'rgba(0, 0, 0, 0.1)',
+    '--separator-bg': isDarkMode
+      ? 'rgba(255, 255, 255, 0.1)'
+      : 'rgba(0, 0, 0, 0.1)',
   } as React.CSSProperties;
 
   return (
     <div
-      className="h-[100vh] w-full relative dynamic-background"
+      className={`h-[100vh] w-full relative dynamic-background ${isDarkMode ? 'dark' : ''}`}
       style={containerStyle}
     >
       <ReactFlow
@@ -124,32 +138,25 @@ export const SchemaVisualizer = ({ connections, models, enums }: Props) => {
           >
             <IDownload color={isDarkMode ? 'white' : 'black'} />
           </ControlButton>
-        </Controls>
 
-        <MiniMap
-          nodeStrokeWidth={3}
-          zoomable
-          pannable
-          nodeColor={nodeColor(isDarkMode)}
-          nodeStrokeColor={nodeStrokeColor(isDarkMode)}
-          maskColor={maskColor(isDarkMode)}
-          style={{
-            backgroundColor: settings.theme.backgroundColor,
-            display: settings.showMinimap ? 'block' : 'none',
-          }}
-        />
+          <ControlButton
+            title="Settings"
+            onClick={() => setShowSettings((s) => !s)}
+          >
+            <ISettings color={isDarkMode ? 'white' : 'black'} />
+          </ControlButton>
+        </Controls>
 
         <Background
           color={isDarkMode ? '#222' : '#ccc'}
           variant={getBackgroundVariant()}
-          style={{
-            opacity: settings.showBackground ? 1 : 0,
-            pointerEvents: settings.showBackground ? 'auto' : 'none',
-          }}
         />
       </ReactFlow>
 
-      <SettingsPanel />
+      <SettingsPanel
+        show={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
     </div>
   );
 };

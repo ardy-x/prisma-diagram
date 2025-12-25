@@ -1,14 +1,14 @@
+import { ReactFlowProvider } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { SchemaVisualizer } from './components/SchemaVisualizer';
-import { ThemeProvider } from './lib/contexts/theme';
 import { SettingsProvider } from './lib/contexts/settings';
+import { ThemeProvider } from './lib/contexts/theme';
 import {
   ColorThemeKind,
   Enum,
   Model,
   ModelConnection,
 } from './lib/types/schema';
-import { ReactFlowProvider } from '@xyflow/react';
 import { getVsCodeApi } from './lib/utils/vscode-api';
 
 function App() {
@@ -56,7 +56,15 @@ function App() {
               enums={enums}
             />
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: 'var(--vscode-foreground)' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100vh',
+                color: 'var(--vscode-foreground)',
+              }}
+            >
               Loading schema...
             </div>
           )}

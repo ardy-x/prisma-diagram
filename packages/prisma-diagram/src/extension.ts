@@ -1,15 +1,15 @@
-import { getDMMF, getSchemaWithPath } from '@prisma/internals';
+import { getDMMF, loadSchemaContext } from '@prisma/internals';
 import * as vscode from 'vscode';
 import { transformDmmfToModelsAndConnections } from './core/render';
-import { PrismaUMLPanel } from './panels/prisma-uml-panel';
+import { PrismaUMLPanel } from './panels/prisma-diagram-panel';
 let outputChannel: vscode.OutputChannel;
 
 export function activate(context: vscode.ExtensionContext) {
-  outputChannel = vscode.window.createOutputChannel('Prisma Generate UML');
-  outputChannel.appendLine('Prisma Generate UML extension activated');
+  outputChannel = vscode.window.createOutputChannel('Prisma Diagram');
+  outputChannel.appendLine('Prisma Diagram extension activated');
 
   const disposable = vscode.commands.registerCommand(
-    'prisma-generate-uml.generateUML',
+    'prismaDiagram.showDiagram',
     async () => {
       const editor = vscode.window.activeTextEditor;
 
@@ -56,25 +56,13 @@ async function generateUMLForPrismaFile(
   let response: Awaited<ReturnType<typeof getDMMF>> | null = null;
 
   try {
-    const schemaResultFromFile = await getSchemaWithPath(fileUri.fsPath);
-    response = await getDMMF({ datamodel: schemaResultFromFile.schemas });
-    outputChannel.appendLine('Successfully parsed schema from file');
+    const schemaContext = await loadSchemaContext({
+      schemaPath: { baseDir: folderUri.fsPath },
+    });
+    response = await getDMMF({ datamodel: schemaContext.schemaFiles });
+    outputChannel.appendLine('Successfully parsed schema from directory');
   } catch (err) {
-    outputChannel.appendLine(
-      `[prisma-generate-uml] Tried reading schema from file: ${err}`,
-    );
-  }
-
-  if (!response) {
-    try {
-      const schemaResultFromDir = await getSchemaWithPath(folderUri.fsPath);
-      response = await getDMMF({ datamodel: schemaResultFromDir.schemas });
-      outputChannel.appendLine('Successfully parsed schema from directory');
-    } catch (err) {
-      outputChannel.appendLine(
-        `[prisma-generate-uml] Tried reading schema from directory: ${err}`,
-      );
-    }
+    outputChannel.appendLine(`[prisma-diagram] Failed to load schema: ${err}`);
   }
 
   if (!response) {
