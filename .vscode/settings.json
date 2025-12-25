@@ -10,5 +10,6 @@
   "typescript.tsc.autoDetect": "off",
   "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,
-  "prettier.enable": false
+  "prettier.enable": false,
+  "css.validate": false
 }

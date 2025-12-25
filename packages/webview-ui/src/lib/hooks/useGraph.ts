@@ -1,17 +1,17 @@
-import equal from 'fast-deep-equal';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { getLayoutedElements } from '../utils/layout-utils';
 import {
-  addEdge,
   Connection,
   ConnectionLineType,
   Edge,
+  addEdge,
   useEdgesState,
   useNodesState,
   useReactFlow,
 } from '@xyflow/react';
-import { MyNode } from '../types/schema';
+import equal from 'fast-deep-equal';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DiagramSettings } from '../contexts/settings';
+import { MyNode } from '../types/schema';
+import { getLayoutedElements } from '../utils/layout-utils';
 
 const DEFAULT_LAYOUT = 'TB';
 

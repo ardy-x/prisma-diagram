@@ -9,16 +9,19 @@
   "engines": {
     "vscode": "^1.83.0"
   },
-  "categories": [
-    "Other"
-  ],
+  "categories": ["Other"],
   "main": "./dist/extension.js",
   "browser": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "prismaDiagram.showDiagram",
-        "title": "Prisma: Show Diagram"
+        "title": "Prisma: Show Diagram",
+        "icon": {
+          "light": "media/readme/logo-light.svg",
+          "dark": "media/readme/logo-dark.svg"
+        }
+
       }
     ],
     "menus": {

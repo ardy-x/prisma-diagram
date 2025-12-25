@@ -5,3 +5,81 @@
 body {
   @apply p-0;
 }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+}
+
+.settings-panel {
+  @apply absolute bottom-4 left-12 backdrop-blur rounded-xl p-2 min-w-48 bg-white/70 dark:bg-black/50 shadow-xl dark:shadow-2xl border border-black/10 dark:border-white/10;
+}
+
+.settings-row {
+  @apply flex items-center justify-between p-2 rounded-lg cursor-pointer transition-all duration-200 bg-white/5 dark:bg-black/5 hover:bg-black/10 dark:hover:bg-white/10;
+}
+
+.settings-label {
+  @apply text-xs font-normal select-none text-black dark:text-white;
+}
+
+.settings-control {
+  @apply flex items-center gap-2;
+}
+
+.settings-toggle {
+  @apply w-8 h-5 rounded-lg relative cursor-pointer transition-all duration-200 bg-black/10 dark:bg-white/20;
+}
+
+.settings-toggle.active {
+  @apply bg-green-500;
+}
+
+.settings-toggle-knob {
+  @apply w-3.5 h-3.5 bg-white rounded-md absolute top-[3px] left-0.5 transition-all duration-200;
+}
+
+.settings-toggle-knob.active {
+  @apply left-4;
+}
+
+.settings-layout-button {
+  @apply px-4 py-2 border-none rounded-lg text-xs font-medium cursor-pointer transition-all duration-200 min-w-20 bg-black/5 dark:bg-white/10 text-black dark:text-white shadow-sm;
+}
+
+.settings-layout-button:hover {
+  @apply shadow-md;
+}
+
+.settings-layout-button.active {
+  @apply bg-black/10 dark:bg-white/20 shadow-inner;
+}
+
+.settings-color-button {
+  @apply w-8 h-5 rounded-lg border-2 border-black/10 cursor-pointer transition-all duration-150;
+}
+
+.settings-color-input {
+  @apply absolute opacity-0 pointer-events-none;
+}
+
+.settings-separator {
+  @apply h-px my-2 bg-black/10 dark:bg-white/10;
+}

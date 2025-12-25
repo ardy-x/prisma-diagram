@@ -1,7 +1,7 @@
 import { getDMMF, loadSchemaContext } from '@prisma/internals';
 import * as vscode from 'vscode';
 import { transformDmmfToModelsAndConnections } from './core/render';
-import { PrismaUMLPanel } from './panels/prisma-uml-panel';
+import { PrismaUMLPanel } from './panels/prisma-diagram-panel';
 let outputChannel: vscode.OutputChannel;
 
 export function activate(context: vscode.ExtensionContext) {
@@ -62,9 +62,7 @@ async function generateUMLForPrismaFile(
     response = await getDMMF({ datamodel: schemaContext.schemaFiles });
     outputChannel.appendLine('Successfully parsed schema from directory');
   } catch (err) {
-    outputChannel.appendLine(
-      `[prisma-diagram] Failed to load schema: ${err}`
-    );
+    outputChannel.appendLine(`[prisma-diagram] Failed to load schema: ${err}`);
   }
 
   if (!response) {

@@ -70,11 +70,12 @@ export class PrismaUMLPanel {
   ) {
     if (PrismaUMLPanel.currentPanel) {
       PrismaUMLPanel.currentPanel.updateData(models, connections, enums);
+      PrismaUMLPanel.currentPanel.reveal();
     } else {
       const panel = vscode.window.createWebviewPanel(
         PrismaUMLPanel.viewType,
         'Prisma Schema UML',
-        vscode.ViewColumn.Two,
+        { viewColumn: vscode.ViewColumn.One, preserveFocus: false },
         {
           enableScripts: true,
           retainContextWhenHidden: true,
@@ -122,13 +123,17 @@ export class PrismaUMLPanel {
     this._models = models;
     this._connections = connections;
     this._enums = enums;
-    
+
     this._panel.webview.postMessage({
       command: 'setData',
       models,
       connections,
       enums,
     });
+  }
+
+  public reveal() {
+    this._panel.reveal(vscode.ViewColumn.One);
   }
 
   public dispose() {

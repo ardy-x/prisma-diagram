@@ -1,21 +1,17 @@
 import {
+  ReactNode,
   createContext,
+  useCallback,
   useContext,
   useState,
-  ReactNode,
-  useCallback,
 } from 'react';
 
 export interface DiagramSettings {
-  layout: 'TB' | 'LR' | 'BT' | 'RL';
+  layout: 'TB' | 'LR';
   showFieldTypes: boolean;
   showFieldIcons: boolean;
-  showMinimap: boolean;
-  showBackground: boolean;
-  backgroundVariant: 'lines' | 'dots' | 'cross';
   theme: {
     primaryColor: string;
-    secondaryColor: string;
     enumColor: string;
     titleColor: string;
     backgroundColor: string;
@@ -26,12 +22,8 @@ export const DEFAULT_SETTINGS: DiagramSettings = {
   layout: 'TB',
   showFieldTypes: true,
   showFieldIcons: true,
-  showMinimap: true,
-  showBackground: true,
-  backgroundVariant: 'lines',
   theme: {
     primaryColor: '#3b82f6',
-    secondaryColor: '#6366f1',
     enumColor: '#10b981',
     titleColor: '#ffffff',
     backgroundColor: '#1c1c1c',
