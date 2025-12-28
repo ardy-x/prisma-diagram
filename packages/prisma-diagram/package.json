@@ -3,7 +3,7 @@
   "displayName": "Prisma Diagram",
   "description": "Generate UML Diagram from prisma schema",
   "version": "1.0.0",
-  "icon": "media/readme/logo.png",
+  "icon": "media/logo-vscode.png",
   "repository": "https://github.com/ardy-x/prisma-diagram",
   "publisher": "ardy-x",
   "engines": {
@@ -18,8 +18,8 @@
         "command": "prismaDiagram.showDiagram",
         "title": "Prisma: Show Diagram",
         "icon": {
-          "light": "media/readme/logo-light.svg",
-          "dark": "media/readme/logo-dark.svg"
+          "light": "media/icon-light.svg",
+          "dark": "media/icon-dark.svg"
         }
 
       }
