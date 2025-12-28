@@ -2,7 +2,7 @@
   "name": "prisma-diagram",
   "displayName": "Prisma Diagram",
   "description": "Generate UML Diagram from prisma schema",
-  "version": "3.5.1",
+  "version": "1.0.0",
   "icon": "media/readme/logo.png",
   "repository": "https://github.com/ardy-x/prisma-diagram",
   "publisher": "ardy-x",
